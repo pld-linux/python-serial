@@ -3,16 +3,15 @@
 
 %include	/usr/lib/rpm/macros.python
 
-%define module serial
+%define	module	serial
 
 Summary:	Serial interface module
-Summary(pl):	TODO
+#Summary(pl):	TODO
 Name:		python-serial
 Version:	2.0
 Release:	0.1
 License:	GPL
-Group:		Python
-######		Unknown group!
+Group:		Development/Languages/Python
 Source0:	http://dl.sourceforge.net/pyserial/pyserial-%{version}.zip
 # Source0-md5:	80a26774156ba38b63b0945f2b511695
 URL:		http://pyserial.sf.net
@@ -28,9 +27,8 @@ backends for Python running on Windows, Linux, BSD (possibly any POSIX
 compilant system) and Jython. The module named "serial" automatically
 selects the appropriate backend.
 
-%description -l pl
-TODO
-
+#%description -l pl
+#TODO
 
 %prep
 %setup  -q -n pyserial-%{version}
