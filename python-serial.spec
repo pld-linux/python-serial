@@ -48,6 +48,10 @@ python ./setup.py install \
 
 mv examples/*.py $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
+find $RPM_BUILD_ROOT%{py_sitescriptdir} -name "*serialjava*" -exec rm {} \;
+find $RPM_BUILD_ROOT%{py_sitescriptdir} -name "*serialwin*" -exec rm {} \;
+find $RPM_BUILD_ROOT%{py_sitescriptdir} -name \*.py -exec rm {} \;
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
