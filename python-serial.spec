@@ -1,7 +1,6 @@
 #TODO:
 # - add descriptions, all kind of cosmetics, subpackage examples, docs
 
-%include	/usr/lib/rpm/macros.python
 
 %define	module	serial
 
