@@ -8,7 +8,7 @@ Summary:	Serial port interface module
 Summary(pl):	Modu³ interfejsu do portu szeregowego
 Name:		python-serial
 Version:	2.0
-Release:	0.1
+Release:	0.2
 License:	GPL
 Group:		Development/Languages/Python
 Source0:	http://dl.sourceforge.net/pyserial/pyserial-%{version}.zip
@@ -40,20 +40,25 @@ python ./setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
 python ./setup.py install \
 	--optimize 2 \
 	--root=$RPM_BUILD_ROOT
+
+mv examples/*.py $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%dir %{py_sitedir}/%{module}
-%{py_sitedir}/%{module}/__init__.pyc
-%{py_sitedir}/%{module}/__init__.pyo
-%{py_sitedir}/%{module}/serialposix.pyc
-%{py_sitedir}/%{module}/serialposix.pyo
-%{py_sitedir}/%{module}/serialutil.pyc
-%{py_sitedir}/%{module}/serialutil.pyo
+%doc CHANGES.txt LICENSE.txt README.txt
+%{_examplesdir}/%{name}-%{version}
+%dir %{py_sitescriptdir}/%{module}
+%{py_sitescriptdir}/%{module}/__init__.pyc
+%{py_sitescriptdir}/%{module}/__init__.pyo
+%{py_sitescriptdir}/%{module}/serialposix.pyc
+%{py_sitescriptdir}/%{module}/serialposix.pyo
+%{py_sitescriptdir}/%{module}/serialutil.pyc
+%{py_sitescriptdir}/%{module}/serialutil.pyo
