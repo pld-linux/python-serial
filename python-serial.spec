@@ -10,7 +10,7 @@ License:	GPL
 Group:		Development/Languages/Python
 Source0:	http://dl.sourceforge.net/pyserial/pyserial-%{version}.zip
 # Source0-md5:	14e774b7b6e5aa52820f0590d3b8c4d9
-URL:		http://pyserial.sf.net/
+URL:		http://pyserial.sourceforge.net/
 %pyrequires_eq	python
 BuildRequires:	python-devel
 BuildRequires:	unzip
