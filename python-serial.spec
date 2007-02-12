@@ -2,7 +2,7 @@
 %define	module	serial
 
 Summary:	Serial port interface module
-Summary(pl):	Modu≥ interfejsu do portu szeregowego
+Summary(pl.UTF-8):   Modu≈Ç interfejsu do portu szeregowego
 Name:		python-serial
 Version:	2.2
 Release:	1
@@ -23,11 +23,11 @@ backends for Python running on Windows, Linux, BSD (possibly any POSIX
 compilant system) and Jython. The module named "serial" automatically
 selects the appropriate backend.
 
-%description -l pl
-Ten modu≥ opakowuje dostÍp do portu szeregowego. Dostarcza backendy
-dla Pythona dzia≥aj±cego na Windows, Linuksie, BSD (byÊ moøe dowolnym
-systemie zgodnym z POSIX) oraz Jythona. Modu≥ o nazwie "serial"
-automatycznie wybiera w≥a∂ciwy backend.
+%description -l pl.UTF-8
+Ten modu≈Ç opakowuje dostƒôp do portu szeregowego. Dostarcza backendy
+dla Pythona dzia≈ÇajƒÖcego na Windows, Linuksie, BSD (byƒá mo≈ºe dowolnym
+systemie zgodnym z POSIX) oraz Jythona. Modu≈Ç o nazwie "serial"
+automatycznie wybiera w≈Ça≈õciwy backend.
 
 %prep
 %setup  -q -n pyserial-%{version}
