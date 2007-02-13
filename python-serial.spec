@@ -2,7 +2,7 @@
 %define	module	serial
 
 Summary:	Serial port interface module
-Summary(pl.UTF-8):   Moduł interfejsu do portu szeregowego
+Summary(pl.UTF-8):	Moduł interfejsu do portu szeregowego
 Name:		python-serial
 Version:	2.2
 Release:	1
