@@ -13,6 +13,8 @@ Source0:	http://dl.sourceforge.net/pyserial/pyserial-%{version}.tar.gz
 URL:		http://pyserial.wiki.sourceforge.net/pySerial
 %pyrequires_eq	python
 BuildRequires:	python-devel
+BuildRequires:	python-modules
+BuildRequires:	rpm-pythonprov
 BuildRequires:	unzip
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
