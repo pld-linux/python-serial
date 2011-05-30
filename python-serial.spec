@@ -14,6 +14,9 @@ URL:		http://pyserial.wiki.sourceforge.net/pySerial
 %pyrequires_eq	python
 BuildRequires:	python-devel
 BuildRequires:	python-modules
+%pyrequires_eq	python3
+BuildRequires:	python3-devel
+BuildRequires:	python3-modules
 BuildRequires:	rpm-pythonprov
 BuildRequires:	unzip
 BuildArch:	noarch
@@ -31,22 +34,42 @@ dla Pythona działającego na Windows, Linuksie, BSD (być może dowolnym
 systemie zgodnym z POSIX) oraz Jythona. Moduł o nazwie "serial"
 automatycznie wybiera właściwy backend.
 
+%package -n	python3-%{module}
+Summary:	Serial port interface module
+Version:	%{version}
+Release:	%{release}
+Group:		Libraries/Python
+
+%description -n python3-%{module}
+This module encapsulates the access for the serial port. It provides
+backends for Python running on Windows, Linux, BSD (possibly any POSIX
+compilant system) and Jython. The module named "serial" automatically
+selects the appropriate backend.
+
 %prep
 %setup  -q -n pyserial-%{version}
 
 %build
+%{__python} ./setup.py build
 %{__python3} ./setup.py build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
 
+%{__python} ./setup.py install \
+	--optimize 2 \
+	--root=$RPM_BUILD_ROOT
+
 %{__python3} ./setup.py install \
 	--optimize 2 \
 	--root=$RPM_BUILD_ROOT
 
-mv examples/*.py $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+cp examples/*.py $RPM_BUILD_ROOT%{_examplesdir}/python-%{module}-%{version}
+cp examples/*.py $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
 
+find $RPM_BUILD_ROOT%{py_sitescriptdir} -name "*serialjava*" -exec rm {} \;
+find $RPM_BUILD_ROOT%{py_sitescriptdir} -name "*serialwin*" -exec rm {} \;
 find $RPM_BUILD_ROOT%{py3_sitescriptdir} -name "*serialjava*" -exec rm {} \;
 find $RPM_BUILD_ROOT%{py3_sitescriptdir} -name "*serialwin*" -exec rm {} \;
 
@@ -56,6 +79,13 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc CHANGES.txt LICENSE.txt README.txt
-%{_examplesdir}/%{name}-%{version}
+%{_examplesdir}/python-%{module}-%{version}
+%{py_sitescriptdir}/%{module}
+%{py_sitescriptdir}/*egg-info
+
+%files -n python3-%{module}
+%defattr(644,root,root,755)
+%doc CHANGES.txt LICENSE.txt README.txt
+%{_examplesdir}/python3-%{module}-%{version}
 %{py3_sitescriptdir}/%{module}
 %{py3_sitescriptdir}/*egg-info
