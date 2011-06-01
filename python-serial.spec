@@ -50,18 +50,23 @@ selects the appropriate backend.
 %setup  -q -n pyserial-%{version}
 
 %build
-%{__python} ./setup.py build
-%{__python3} ./setup.py build
+%{__python} ./setup.py build --build-base py2
+%{__python3} ./setup.py build --build-base py3
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_examplesdir}/%{name}-%{version}
+install -d $RPM_BUILD_ROOT%{_examplesdir}/python-%{module}-%{version} \
+	$RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
 
-%{__python} ./setup.py install \
+%{__python} ./setup.py build \
+	--build-base py2 \
+	install \
 	--optimize 2 \
 	--root=$RPM_BUILD_ROOT
 
-%{__python3} ./setup.py install \
+%{__python3} ./setup.py build \
+	--build-base py3 \
+	install \
 	--optimize 2 \
 	--root=$RPM_BUILD_ROOT
 
