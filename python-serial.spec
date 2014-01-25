@@ -8,12 +8,12 @@
 Summary:	Serial port interface module
 Summary(pl.UTF-8):	Moduł interfejsu do portu szeregowego
 Name:		python-serial
-Version:	2.6
-Release:	3
+Version:	2.7
+Release:	1
 License:	GPL
 Group:		Development/Languages/Python
 Source0:	http://pypi.python.org/packages/source/p/pyserial/pyserial-%{version}.tar.gz
-# Source0-md5:	cde799970b7c1ce1f7d6e9ceebe64c98
+# Source0-md5:	794506184df83ef2290de0d18803dd11
 URL:		http://pyserial.wiki.sourceforge.net/pySerial
 %if %{with python2}
 BuildRequires:	python-devel
@@ -23,6 +23,7 @@ BuildRequires:	python-modules
 %if %{with python3}
 BuildRequires:	python3-devel
 BuildRequires:	python3-modules
+BuildRequires:	python3-2to3
 %endif
 BuildRequires:	rpm-pythonprov
 BuildRequires:	unzip
