@@ -9,7 +9,7 @@ Summary:	Serial port interface module
 Summary(pl.UTF-8):	Moduł interfejsu do portu szeregowego
 Name:		python-serial
 Version:	2.7
-Release:	1
+Release:	2
 License:	GPL
 Group:		Development/Languages/Python
 Source0:	http://pypi.python.org/packages/source/p/pyserial/pyserial-%{version}.tar.gz
@@ -54,6 +54,16 @@ This module encapsulates the access for the serial port. It provides
 backends for Python running on Windows, Linux, BSD (possibly any POSIX
 compilant system) and Jython. The module named "serial" automatically
 selects the appropriate backend.
+
+%package -n	miniterm
+Summary:	Very simple serial terminal
+Version:	%{version}
+Release:	%{release}
+Group:		Applications/Communications
+Requires:	python%{?with_python3:3}-%{module} = %{version}-%{release}
+
+%description -n miniterm
+Very simple serial terminal written in Python.
 
 %prep
 %setup  -q -n pyserial-%{version}
@@ -111,3 +121,7 @@ rm -rf $RPM_BUILD_ROOT
 %{py3_sitescriptdir}/%{module}
 %{py3_sitescriptdir}/*egg-info
 %endif
+
+%files -n miniterm
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_bindir}/miniterm.py
