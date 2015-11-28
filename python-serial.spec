@@ -65,17 +65,17 @@ Very simple serial terminal written in Python.
 
 %build
 %if %{with python2}
-%{__python} setup.py build --build-base py2
+%py_build --build-base py2
 %endif
 %if %{with python3}
-%{__python3} setup.py build --build-base py3
+%py3_build --build-base py3
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 install -d $RPM_BUILD_ROOT%{_examplesdir}/python-%{module}-%{version}
-%{__python} setup.py build \
+%py_build \
 	--build-base py2 \
 	install \
 	--optimize 2 \
@@ -86,7 +86,7 @@ find $RPM_BUILD_ROOT%{py_sitescriptdir} -name "*serialwin*" -exec rm {} \;
 %endif
 %if %{with python3}
 install -d $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
-%{__python3} setup.py build \
+%py3_build \
 	--build-base py3 \
 	install \
 	--optimize 2 \
