@@ -14,6 +14,7 @@ Group:		Development/Languages/Python
 Source0:	http://pypi.python.org/packages/source/p/pyserial/pyserial-%{version}.tar.gz
 # Source0-md5:	794506184df83ef2290de0d18803dd11
 URL:		http://pyserial.wiki.sourceforge.net/pySerial
+BuildRequires:	rpmbuild(macros) >= 1.710
 BuildRequires:	rpm-pythonprov
 BuildRequires:	unzip
 %if %{with python2}
