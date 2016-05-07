@@ -3,12 +3,12 @@
 %bcond_without	python2		# Python 2.x module
 %bcond_without	python3		# Python 3.x module
 
-%define 	module	serial
+%define		module	serial
 Summary:	Serial port interface module
 Summary(pl.UTF-8):	Moduł interfejsu do portu szeregowego
 Name:		python-serial
 Version:	2.7
-Release:	5
+Release:	6
 License:	GPL
 Group:		Development/Languages/Python
 Source0:	http://pypi.python.org/packages/source/p/pyserial/pyserial-%{version}.tar.gz
@@ -66,32 +66,27 @@ Very simple serial terminal written in Python.
 
 %build
 %if %{with python2}
-%py_build --build-base py2
+%py_build
 %endif
 %if %{with python3}
-%py3_build --build-base py3
+%py3_build
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 install -d $RPM_BUILD_ROOT%{_examplesdir}/python-%{module}-%{version}
-%py_build \
-	--build-base py2 \
-	install \
-	--optimize 2 \
-	--root=$RPM_BUILD_ROOT
+%py_install
+
 cp -p examples/*.py $RPM_BUILD_ROOT%{_examplesdir}/python-%{module}-%{version}
 find $RPM_BUILD_ROOT%{py_sitescriptdir} -name "*serialjava*" -exec rm {} \;
 find $RPM_BUILD_ROOT%{py_sitescriptdir} -name "*serialwin*" -exec rm {} \;
 %endif
+
 %if %{with python3}
 install -d $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
-%py3_build \
-	--build-base py3 \
-	install \
-	--optimize 2 \
-	--root=$RPM_BUILD_ROOT
+%py3_install
+
 cp -p examples/*.py $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
 find $RPM_BUILD_ROOT%{py3_sitescriptdir} -name "*serialjava*" -exec rm {} \;
 find $RPM_BUILD_ROOT%{py3_sitescriptdir} -name "*serialwin*" -exec rm {} \;
