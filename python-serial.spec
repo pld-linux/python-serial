@@ -7,12 +7,12 @@
 Summary:	Serial port interface module
 Summary(pl.UTF-8):	Moduł interfejsu do portu szeregowego
 Name:		python-serial
-Version:	2.7
-Release:	6
+Version:	3.2.1
+Release:	1
 License:	GPL
 Group:		Development/Languages/Python
-Source0:	http://pypi.python.org/packages/source/p/pyserial/pyserial-%{version}.tar.gz
-# Source0-md5:	794506184df83ef2290de0d18803dd11
+Source0:	https://github.com/pyserial/pyserial/archive/v%{version}.tar.gz
+# Source0-md5:	a4712d3a28ebc4d61c87a1c1bb6461c0
 URL:		http://pyserial.wiki.sourceforge.net/pySerial
 BuildRequires:	rpmbuild(macros) >= 1.710
 BuildRequires:	rpm-pythonprov
@@ -98,7 +98,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python2}
 %files
 %defattr(644,root,root,755)
-%doc CHANGES.txt LICENSE.txt README.txt
+%doc CHANGES.rst LICENSE.txt README.rst
 %{py_sitescriptdir}/%{module}
 %{py_sitescriptdir}/*egg-info
 %{_examplesdir}/python-%{module}-%{version}
@@ -107,7 +107,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with python3}
 %files -n python3-%{module}
 %defattr(644,root,root,755)
-%doc CHANGES.txt LICENSE.txt README.txt
+%doc CHANGES.rst LICENSE.txt README.rst
 %{py3_sitescriptdir}/%{module}
 %{py3_sitescriptdir}/*egg-info
 %{_examplesdir}/python3-%{module}-%{version}
