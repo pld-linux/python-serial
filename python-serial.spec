@@ -8,7 +8,7 @@ Summary:	Serial port interface module
 Summary(pl.UTF-8):	Moduł interfejsu do portu szeregowego
 Name:		python-serial
 Version:	3.2.1
-Release:	2
+Release:	3
 License:	GPL
 Group:		Development/Languages/Python
 Source0:	https://github.com/pyserial/pyserial/archive/v%{version}.tar.gz
@@ -84,6 +84,9 @@ find $RPM_BUILD_ROOT%{py_sitescriptdir} -name "*serialwin*" -exec rm {} \;
 %endif
 
 %if %{with python3}
+# Always prefer python3 version
+%{__rm} -f $RPM_BUILD_ROOT%{_bindir}/miniterm.py
+
 install -d $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
 %py3_install
 
