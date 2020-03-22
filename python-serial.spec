@@ -7,26 +7,27 @@
 Summary:	Serial port interface module
 Summary(pl.UTF-8):	Moduł interfejsu do portu szeregowego
 Name:		python-serial
-Version:	3.3
-Release:	3
-License:	GPL
+Version:	3.4
+Release:	1
+License:	BSD
 Group:		Development/Languages/Python
-Source0:	https://github.com/pyserial/pyserial/archive/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	af48f8f9b338c187f791d2f560f8b230
-URL:		http://pyserial.wiki.sourceforge.net/pySerial
-BuildRequires:	rpmbuild(macros) >= 1.710
-BuildRequires:	rpm-pythonprov
-BuildRequires:	unzip
+#Source0Download: https://github.com/pyserial/pyserial/releases
+Source0:	https://github.com/pyserial/pyserial/archive/v%{version}/pyserial-%{version}.tar.gz
+# Source0-md5:	fc00727ed9cf3a31b7a296a4d42f6afc
+URL:		https://pypi.org/project/pyserial/
 %if %{with python2}
-BuildRequires:	python-devel
-BuildRequires:	python-modules
-Requires:	python
+BuildRequires:	python-devel >= 1:2.7
+BuildRequires:	python-modules >= 1:2.7
+BuildRequires:	python-setuptools
 %endif
 %if %{with python3}
-BuildRequires:	python3-2to3
-BuildRequires:	python3-devel
-BuildRequires:	python3-modules
+BuildRequires:	python3-devel >= 1:3.2
+BuildRequires:	python3-modules >= 1:3.2
+BuildRequires:	python3-setuptools
 %endif
+BuildRequires:	rpmbuild(macros) >= 1.714
+BuildRequires:	rpm-pythonprov
+Requires:	python-modules >= 1:2.7
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -42,10 +43,11 @@ dla Pythona działającego na Windows, Linuksie, BSD (być może dowolnym
 systemie zgodnym z POSIX) oraz Jythona. Moduł o nazwie "serial"
 automatycznie wybiera właściwy backend.
 
-%package -n	python3-%{module}
+%package -n python3-%{module}
 Summary:	Serial port interface module
+Summary(pl.UTF-8):	Moduł interfejsu do portu szeregowego
 Group:		Libraries/Python
-Requires:	python3
+Requires:	python3-modules >= 1:3.2
 
 %description -n python3-%{module}
 This module encapsulates the access for the serial port. It provides
@@ -53,13 +55,23 @@ backends for Python running on Windows, Linux, BSD (possibly any POSIX
 compilant system) and Jython. The module named "serial" automatically
 selects the appropriate backend.
 
+%description -n python3-%{module} -l pl.UTF-8
+Ten moduł opakowuje dostęp do portu szeregowego. Dostarcza backendy
+dla Pythona działającego na Windows, Linuksie, BSD (być może dowolnym
+systemie zgodnym z POSIX) oraz Jythona. Moduł o nazwie "serial"
+automatycznie wybiera właściwy backend.
+
 %package -n miniterm
 Summary:	Very simple serial terminal
+Summary(pl.UTF-8):	Bardzo prosty terminal szeregowy
 Group:		Applications/Communications
 Requires:	python%{?with_python3:3}-%{module} = %{version}-%{release}
 
 %description -n miniterm
 Very simple serial terminal written in Python.
+
+%description -n miniterm -l pl.UTF-8
+Bardzo prosty terminal szeregowy napisany w Pythonie.
 
 %prep
 %setup  -q -n pyserial-%{version}
@@ -68,31 +80,43 @@ Very simple serial terminal written in Python.
 %if %{with python2}
 %py_build
 %endif
+
 %if %{with python3}
 %py3_build
 %endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
+
 %if %{with python2}
-install -d $RPM_BUILD_ROOT%{_examplesdir}/python-%{module}-%{version}
 %py_install
 
+install -d $RPM_BUILD_ROOT%{_examplesdir}/python-%{module}-%{version}
 cp -p examples/*.py $RPM_BUILD_ROOT%{_examplesdir}/python-%{module}-%{version}
-find $RPM_BUILD_ROOT%{py_sitescriptdir} -name "*serialjava*" -exec rm {} \;
-find $RPM_BUILD_ROOT%{py_sitescriptdir} -name "*serialwin*" -exec rm {} \;
+%{__sed} -i -e '1s,/usr/bin/env python,%{__python},' $RPM_BUILD_ROOT%{_examplesdir}/python-%{module}-%{version}/*.py
+
+# remove .NET (IronPython), Jython, Win32 specific code
+%{__rm} $RPM_BUILD_ROOT%{py_sitescriptdir}/serial/{serialcli,serialjava,serialwin32,win32}.py*
+%{__rm} $RPM_BUILD_ROOT%{py_sitescriptdir}/serial/tools/list_ports_{osx,windows}.py*
+
+%py_postclean
 %endif
 
 %if %{with python3}
-# Always prefer python3 version
-%{__rm} -f $RPM_BUILD_ROOT%{_bindir}/miniterm.py
+# prefer python3 version
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/miniterm.py
 
-install -d $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
 %py3_install
 
+install -d $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
 cp -p examples/*.py $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}
-find $RPM_BUILD_ROOT%{py3_sitescriptdir} -name "*serialjava*" -exec rm {} \;
-find $RPM_BUILD_ROOT%{py3_sitescriptdir} -name "*serialwin*" -exec rm {} \;
+%{__sed} -i -e '1s,/usr/bin/env python,%{__python3},' $RPM_BUILD_ROOT%{_examplesdir}/python3-%{module}-%{version}/*.py
+
+# remove .NET (IronPython), Jython, Win32 specific code
+%{__rm} $RPM_BUILD_ROOT%{py3_sitescriptdir}/serial/{serialcli,serialjava,serialwin32,win32}.py
+%{__rm} $RPM_BUILD_ROOT%{py3_sitescriptdir}/serial/tools/list_ports_{osx,windows}.py
+%{__rm} $RPM_BUILD_ROOT%{py3_sitescriptdir}/serial/__pycache__/{serialcli,serialjava,serialwin32,win32}.*.py*
+%{__rm} $RPM_BUILD_ROOT%{py3_sitescriptdir}/serial/tools/__pycache__/list_ports_{osx,windows}.*.py*
 %endif
 
 %clean
@@ -102,8 +126,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc CHANGES.rst LICENSE.txt README.rst
-%{py_sitescriptdir}/%{module}
-%{py_sitescriptdir}/*egg-info
+%{py_sitescriptdir}/serial
+%{py_sitescriptdir}/pyserial-%{version}-py*.egg-info
 %{_examplesdir}/python-%{module}-%{version}
 %endif
 
@@ -111,8 +135,8 @@ rm -rf $RPM_BUILD_ROOT
 %files -n python3-%{module}
 %defattr(644,root,root,755)
 %doc CHANGES.rst LICENSE.txt README.rst
-%{py3_sitescriptdir}/%{module}
-%{py3_sitescriptdir}/*egg-info
+%{py3_sitescriptdir}/serial
+%{py3_sitescriptdir}/pyserial-%{version}-py*.egg-info
 %{_examplesdir}/python3-%{module}-%{version}
 %endif
 
