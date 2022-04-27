@@ -1,5 +1,7 @@
 #
 # Conditional build:
+%bcond_without	doc		# Sphinx documentation
+%bcond_without	tests		# unit tests
 %bcond_without	python2		# Python 2.x module
 %bcond_without	python3		# Python 3.x module
 
@@ -7,13 +9,13 @@
 Summary:	Serial port interface module
 Summary(pl.UTF-8):	Moduł interfejsu do portu szeregowego
 Name:		python-serial
-Version:	3.4
-Release:	5
+Version:	3.5
+Release:	1
 License:	BSD
 Group:		Development/Languages/Python
 #Source0Download: https://github.com/pyserial/pyserial/releases
 Source0:	https://github.com/pyserial/pyserial/archive/v%{version}/pyserial-%{version}.tar.gz
-# Source0-md5:	fc00727ed9cf3a31b7a296a4d42f6afc
+# Source0-md5:	ce1cf20f1bbf608027b14d4a97a377fc
 URL:		https://pypi.org/project/pyserial/
 %if %{with python2}
 BuildRequires:	python-devel >= 1:2.7
@@ -21,8 +23,8 @@ BuildRequires:	python-modules >= 1:2.7
 BuildRequires:	python-setuptools
 %endif
 %if %{with python3}
-BuildRequires:	python3-devel >= 1:3.2
-BuildRequires:	python3-modules >= 1:3.2
+BuildRequires:	python3-devel >= 1:3.4
+BuildRequires:	python3-modules >= 1:3.4
 BuildRequires:	python3-setuptools
 %endif
 BuildRequires:	rpmbuild(macros) >= 1.714
@@ -47,7 +49,7 @@ automatycznie wybiera właściwy backend.
 Summary:	Serial port interface module
 Summary(pl.UTF-8):	Moduł interfejsu do portu szeregowego
 Group:		Libraries/Python
-Requires:	python3-modules >= 1:3.2
+Requires:	python3-modules >= 1:3.4
 
 %description -n python3-%{module}
 This module encapsulates the access for the serial port. It provides
@@ -60,6 +62,17 @@ Ten moduł opakowuje dostęp do portu szeregowego. Dostarcza backendy
 dla Pythona działającego na Windows, Linuksie, BSD (być może dowolnym
 systemie zgodnym z POSIX) oraz Jythona. Moduł o nazwie "serial"
 automatycznie wybiera właściwy backend.
+
+%package apidocs
+Summary:	API documentation for Python serial module
+Summary(pl.UTF-8):	Dokumentacja API modułu Pythona serial
+Group:		Documentation
+
+%description apidocs
+API documentation for Python serial module.
+
+%description apidocs -l pl.UTF-8
+Dokumentacja API modułu Pythona serial.
 
 %package -n miniterm
 Summary:	Very simple serial terminal
@@ -79,10 +92,22 @@ Bardzo prosty terminal szeregowy napisany w Pythonie.
 %build
 %if %{with python2}
 %py_build
+
+%if %{with tests}
+%{__python} -m unittest discover -s test
+%endif
 %endif
 
 %if %{with python3}
 %py3_build
+
+%if %{with tests}
+%{__python3} -m unittest discover -s test
+%endif
+%endif
+
+%if %{with doc}
+%{__make} -C documentation html
 %endif
 
 %install
@@ -104,7 +129,8 @@ cp -p examples/*.py $RPM_BUILD_ROOT%{_examplesdir}/python-%{module}-%{version}
 
 %if %{with python3}
 # prefer python3 version
-%{__rm} $RPM_BUILD_ROOT%{_bindir}/miniterm.py
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/pyserial-miniterm
+%{__rm} $RPM_BUILD_ROOT%{_bindir}/pyserial-ports
 
 %py3_install
 
@@ -140,6 +166,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_examplesdir}/python3-%{module}-%{version}
 %endif
 
+%if %{with doc}
+%files apidocs
+%defattr(644,root,root,755)
+%doc documentation/_build/html/{_static,*.html,*.js}
+%endif
+
 %files -n miniterm
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_bindir}/miniterm.py
+%attr(755,root,root) %{_bindir}/pyserial-miniterm
+%attr(755,root,root) %{_bindir}/pyserial-ports
