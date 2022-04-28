@@ -1,7 +1,7 @@
 #
 # Conditional build:
 %bcond_without	doc		# Sphinx documentation
-%bcond_without	tests		# unit tests
+%bcond_with	tests		# unit tests (test_pty.Test_Pty_Serial_Open tests require ptys)
 %bcond_without	python2		# Python 2.x module
 %bcond_without	python3		# Python 3.x module
 
